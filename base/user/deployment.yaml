@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: user
-          image: 13.201.141.194:5000/user-service:1
+          image: 13.201.141.194:5000/user-service:4
           ports:
             - containerPort: 8080
           env:
