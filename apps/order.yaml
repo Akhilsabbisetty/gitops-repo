@@ -1,14 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: payment-service
+  name: order-service
   namespace: argocd
 spec:
   project: default
   source:
-    repoURL: https://github.com/Akhilsabbisetty/payment-service-repo
+    repoURL: https://github.com/Akhilsabbisetty/order-service-repo
     targetRevision: HEAD
-    path: base/payment
+    path: base/order
   destination:
     server: https://kubernetes.default.svc
     namespace: default

@@ -4,9 +4,12 @@ metadata:
   name: notification-service
   namespace: argocd
 spec:
+  project: default
   source:
-    repoURL: https://github.com/Akhilsabbisetty/gitops-repo.git
+    repoURL: https://github.com/Akhilsabbisetty/notification-service-repo
+    targetRevision: HEAD
     path: base/notification
   destination:
     server: https://kubernetes.default.svc
     namespace: default
+  syncPolicy: {}

@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/Akhilsabbisetty/gitops-repo.git 
+    repoURL: https://github.com/Akhilsabbisetty/user-service-repo
     targetRevision: HEAD
     path: base/user
   destination:
