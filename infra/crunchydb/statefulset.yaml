@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+spec:
+  serviceName: postgres
+  replicas: 3
+
+  selector:
+    matchLabels:
+      app: postgres
+
+  template:
+    metadata:
+      labels:
+        app: postgres
+
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15
+
+          ports:
+            - containerPort: 5432
+
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: pg-secret
+                  key: POSTGRES_USER
+
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pg-secret
+                  key: POSTGRES_PASSWORD
+
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: pg-secret
+                  key: POSTGRES_DB
+
+            - name: REPL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: pg-secret
+                  key: REPL_USER
+
+            - name: REPL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pg-secret
+                  key: REPL_PASSWORD
+
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+
+          command:
+            - bash
+            - -c
+            - |
+              if [ "$(hostname)" == "postgres-0" ]; then
+                echo "Primary node starting..."
+                docker-entrypoint.sh postgres
+              else
+                echo "Replica node starting..."
+                until pg_basebackup -h postgres-0.postgres -D /var/lib/postgresql/data -U $REPL_USER -Fp -Xs -P -R; do
+                  sleep 5
+                done
+                docker-entrypoint.sh postgres
+              fi
+
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 20Gi

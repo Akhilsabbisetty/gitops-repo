@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+data:
+  primary.conf: |
+    wal_level = replica
+    max_wal_senders = 10
+    wal_keep_size = 64MB
+
+  replica.conf: |
+    hot_standby = on
