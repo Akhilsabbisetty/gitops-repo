@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: order
-          image: 13.201.141.194:5000/order-service:2
+          image: nexus.ascloud.space/order-service:2
           ports:
             - containerPort: 8080

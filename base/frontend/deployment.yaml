@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: 13.201.141.194:5000/frontend:1
+          image: nexus.ascloud.space/frontend:1
           ports:
             - containerPort: 80

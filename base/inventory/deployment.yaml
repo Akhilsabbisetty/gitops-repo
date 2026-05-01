@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: inventory
-          image: 13.201.141.194:5000/inventory-service:1
+          image: nexus.ascloud.space/inventory-service:1
           ports:
             - containerPort: 8080
