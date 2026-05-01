@@ -26,5 +26,6 @@ resources:
   - logging/kibana-deployment.yaml
   - logging/kibana-service.yaml
   - logging/filebeat.yaml
+  - logging/loki-service.yaml
 
   - ingress/main.yaml
