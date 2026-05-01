@@ -27,37 +27,27 @@ spec:
                 port:
                   number: 80
 
-    - host: prometheus.ascloud.space
+    - host: inventory.ascloud.space
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: prometheus
+                name: inventory-service
                 port:
-                  number: 9090
+                  number: 80
 
-    - host: kibana.ascloud.space
+    - host: order.ascloud.space
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
-            service:
-              name: kibana
-              port:
-                number: 5601
-    - host: grafana.ascloud.space
-      http:
-       paths:
-         - path: /
-           pathType: Prefix
-           backend:
-             service:
-               name: grafana
-               port:
-                 number: 3000
+              service:
+                name: order-service
+                port:
+                  number: 80
 
     - host: payment.ascloud.space
       http:
@@ -78,5 +68,49 @@ spec:
             backend:
               service:
                 name: notification-service
+                port:
+                  number: 80
+
+    - host: prometheus.ascloud.space
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: prometheus
+                port:
+                  number: 9090
+
+    - host: grafana.ascloud.space
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: grafana
+                port:
+                  number: 3000
+
+    - host: kibana.ascloud.space
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: kibana
+                port:
+                  number: 5601
+
+    - host: argocd.ascloud.space
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: argocd-server
                 port:
                   number: 80
