@@ -24,6 +24,9 @@ spec:
             - containerPort: 5432
 
           env:
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
@@ -62,15 +65,50 @@ spec:
             - bash
             - -c
             - |
-              if [ "$(hostname)" == "postgres-0" ]; then
-                echo "Primary node starting..."
-                docker-entrypoint.sh postgres
+              if [ "$(hostname)" = "postgres-0" ]; then
+                echo "Starting primary..."
+
+                if [ ! -s "$PGDATA/PG_VERSION" ]; then
+                  docker-entrypoint.sh postgres &
+                  pid=$!
+
+                  until pg_isready -U "$POSTGRES_USER"; do
+                    sleep 2
+                  done
+
+                  psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c "CREATE ROLE $REPL_USER WITH REPLICATION LOGIN PASSWORD '$REPL_PASSWORD';" || true
+
+                  echo "host replication $REPL_USER 0.0.0.0/0 md5" >> "$PGDATA/pg_hba.conf"
+                  echo "wal_level = replica" >> "$PGDATA/postgresql.conf"
+                  echo "max_wal_senders = 10" >> "$PGDATA/postgresql.conf"
+                  echo "wal_keep_size = 256MB" >> "$PGDATA/postgresql.conf"
+                  echo "listen_addresses = '*'" >> "$PGDATA/postgresql.conf"
+
+                  kill "$pid"
+                  wait "$pid"
+                fi
+
+                exec docker-entrypoint.sh postgres
+
               else
-                echo "Replica node starting..."
-                until pg_basebackup -h postgres-0.postgres -D /var/lib/postgresql/data -U $REPL_USER -Fp -Xs -P -R; do
-                  sleep 5
-                done
-                docker-entrypoint.sh postgres
+                echo "Starting replica..."
+
+                if [ ! -s "$PGDATA/PG_VERSION" ]; then
+                  rm -rf "$PGDATA"/*
+                  until PGPASSWORD="$REPL_PASSWORD" pg_basebackup \
+                    -h postgres-0.postgres \
+                    -D "$PGDATA" \
+                    -U "$REPL_USER" \
+                    -Fp \
+                    -Xs \
+                    -P \
+                    -R; do
+                    echo "Waiting for primary..."
+                    sleep 5
+                  done
+                fi
+
+                exec docker-entrypoint.sh postgres
               fi
 
   volumeClaimTemplates:
@@ -78,6 +116,7 @@ spec:
         name: data
       spec:
         accessModes: ["ReadWriteOnce"]
+        storageClassName: gp3
         resources:
           requests:
             storage: 20Gi
