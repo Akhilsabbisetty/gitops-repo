@@ -103,14 +103,3 @@ spec:
                 name: kibana
                 port:
                   number: 5601
-
-    - host: argocd.ascloud.space
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: argocd-server
-                port:
-                  number: 80
