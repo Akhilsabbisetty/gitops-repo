@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/Akhilsabbisetty/notification-service-repo
+    repoURL: https://github.com/Akhilsabbisetty/gitops-repo
     targetRevision: HEAD
     path: base/notification
   destination:
