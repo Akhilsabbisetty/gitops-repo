@@ -4,9 +4,12 @@ metadata:
   name: inventory-service
   namespace: argocd
 spec:
+  project: default
   source:
-    repoURL: https://github.com/Akhilsabbisetty/gitops-repo.git
+    repoURL: https://github.com/your-org/gitops-repo
+    targetRevision: HEAD
     path: base/inventory
   destination:
     server: https://kubernetes.default.svc
     namespace: default
+  syncPolicy: {}
