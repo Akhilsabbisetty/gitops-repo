@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: inventory
-          image: nexus.ascloud.space/inventory-service:2
+          image: nexus.ascloud.space/inventory-service:3
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
