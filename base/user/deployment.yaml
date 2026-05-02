@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: user
-          image: nexus.ascloud.space/user-service:1
+          image: nexus.ascloud.space/user-service:4
           ports:
             - containerPort: 8080
           env:
