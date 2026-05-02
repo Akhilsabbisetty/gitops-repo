@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: notification-service
-          image: nexus.ascloud.space/notification-service:2
+          image: nexus.ascloud.space/notification-service:3
           imagePullPolicy: Always
           ports:
             - containerPort: 8080

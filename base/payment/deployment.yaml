@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: payment-service
-          image: nexus.ascloud.space/payment-service:2
+          image: nexus.ascloud.space/payment-service:3
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
