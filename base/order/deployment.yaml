@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: order
-          image: nexus.ascloud.space/order-service:3
+          image: nexus.ascloud.space/order-service:5
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
