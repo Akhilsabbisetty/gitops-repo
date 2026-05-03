@@ -25,17 +25,22 @@ spec:
               value: notification-service
             - name: SPRING_KAFKA_CONSUMER_AUTO_OFFSET_RESET
               value: earliest
-            - name: SMTP_HOST
+
+            - name: SPRING_MAIL_HOST
               value: smtp.gmail.com
-            - name: SMTP_PORT
+            - name: SPRING_MAIL_PORT
               value: "587"
-            - name: SMTP_USERNAME
+            - name: SPRING_MAIL_USERNAME
               valueFrom:
-              secretKeyRef:
-                name: smtp-secret
-                key: SMTP_USERNAME
-            - name: SMTP_PASSWORD
+                secretKeyRef:
+                  name: smtp-secret
+                  key: SMTP_USERNAME
+            - name: SPRING_MAIL_PASSWORD
               valueFrom:
-              secretKeyRef:
-                name: smtp-secret
-                key: SMTP_PASSWORD
+                secretKeyRef:
+                  name: smtp-secret
+                  key: SMTP_PASSWORD
+            - name: SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH
+              value: "true"
+            - name: SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE
+              value: "true"
