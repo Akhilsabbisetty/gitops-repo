@@ -7,4 +7,4 @@ spec:
     app: frontend
   ports:
     - port: 80
-      targetPort: 3000   # 👈 FIX THIS (or 5173 / 8080 based on your app)
+      targetPort: 80   # ✅ FIX HERE
