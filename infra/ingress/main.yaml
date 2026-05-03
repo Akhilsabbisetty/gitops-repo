@@ -2,10 +2,27 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: main-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
   ingressClassName: nginx
+
+  tls:
+    - hosts:
+        - sneakhive.ascloud.space
+        - user.ascloud.space
+        - inventory.ascloud.space
+        - order.ascloud.space
+        - payment.ascloud.space
+        - notification.ascloud.space
+        - prometheus.ascloud.space
+        - grafana.ascloud.space
+        - kibana.ascloud.space
+      secretName: ascloud-space-tls
+
   rules:
-    - host: ui.ascloud.space
+    - host: sneakhive.ascloud.space
       http:
         paths:
           - path: /
