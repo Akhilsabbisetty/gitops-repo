@@ -23,13 +23,22 @@ spec:
               value: redpanda:9092
 
             - name: SPRING_DATASOURCE_URL
-              value: jdbc:postgresql://postgres:5432/ordersdb
+              value: jdbc:postgresql://postgres-0.postgres:5432/ordersdb
+
             - name: SPRING_DATASOURCE_USERNAME
-              value: postgres
+              valueFrom:
+                secretKeyRef:
+                  name: pg-secret
+                  key: POSTGRES_USER
+
             - name: SPRING_DATASOURCE_PASSWORD
-              value: postgres
+              valueFrom:
+                secretKeyRef:
+                  name: pg-secret
+                  key: POSTGRES_PASSWORD
 
             - name: SPRING_JPA_HIBERNATE_DDL_AUTO
               value: update
+
             - name: SPRING_JPA_DATABASE_PLATFORM
               value: org.hibernate.dialect.PostgreSQLDialect
