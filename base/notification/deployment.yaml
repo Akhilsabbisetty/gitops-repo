@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: notification-service
 spec:
+  serviceAccountName: sns-sa
   replicas: 3
   selector:
     matchLabels:
