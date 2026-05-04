@@ -5,62 +5,50 @@ metadata:
 spec:
   serviceName: postgres
   replicas: 3
-
   selector:
     matchLabels:
       app: postgres
-
   template:
     metadata:
       labels:
         app: postgres
-
     spec:
       containers:
         - name: postgres
           image: postgres:15
-
           ports:
             - containerPort: 5432
-
           env:
             - name: PGDATA
               value: /var/lib/postgresql/data/pgdata
-
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
                   name: pg-secret
                   key: POSTGRES_USER
-
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: pg-secret
                   key: POSTGRES_PASSWORD
-
             - name: POSTGRES_DB
               valueFrom:
                 secretKeyRef:
                   name: pg-secret
                   key: POSTGRES_DB
-
             - name: REPL_USER
               valueFrom:
                 secretKeyRef:
                   name: pg-secret
                   key: REPL_USER
-
             - name: REPL_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: pg-secret
                   key: REPL_PASSWORD
-
           volumeMounts:
             - name: data
               mountPath: /var/lib/postgresql/data
-
           command:
             - bash
             - -c
@@ -89,7 +77,6 @@ spec:
                 fi
 
                 exec docker-entrypoint.sh postgres
-
               else
                 echo "Starting replica..."
 
@@ -115,7 +102,8 @@ spec:
     - metadata:
         name: data
       spec:
-        accessModes: ["ReadWriteOnce"]
+        accessModes:
+          - ReadWriteOnce
         storageClassName: gp3-owner-devops-v2
         resources:
           requests:

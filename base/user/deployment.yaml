@@ -19,18 +19,22 @@ spec:
           ports:
             - containerPort: 8080
           env:
-            - name: POSTGRES_USER
-              valueFrom:
-                secretKeyRef:
-                  name: pg-secret
-                  key: POSTGRES_USER
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: pg-secret
-                  key: POSTGRES_PASSWORD
-            - name: POSTGRES_DB
+            - name: DB_HOST
+              value: postgres-0.postgres
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_NAME
               valueFrom:
                 secretKeyRef:
                   name: pg-secret
                   key: POSTGRES_DB
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: pg-secret
+                  key: POSTGRES_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pg-secret
+                  key: POSTGRES_PASSWORD

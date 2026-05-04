@@ -3,8 +3,10 @@ kind: Service
 metadata:
   name: user-service
 spec:
+  type: ClusterIP
   selector:
     app: user-service
   ports:
-    - port: 80
+    - name: http
+      port: 80
       targetPort: 8080
