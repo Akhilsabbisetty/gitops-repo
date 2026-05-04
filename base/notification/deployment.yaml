@@ -3,7 +3,6 @@ kind: Deployment
 metadata:
   name: notification-service
 spec:
-  serviceAccountName: sns-sa
   replicas: 3
   selector:
     matchLabels:
@@ -13,6 +12,7 @@ spec:
       labels:
         app: notification-service
     spec:
+      serviceAccountName: sns-sa
       containers:
         - name: notification-service
           image: nexus.ascloud.space/notification-service:8
