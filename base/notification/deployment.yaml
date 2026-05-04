@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: notification-service
-          image: nexus.ascloud.space/notification-service:7
+          image: nexus.ascloud.space/notification-service:8
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -26,21 +26,7 @@ spec:
             - name: SPRING_KAFKA_CONSUMER_AUTO_OFFSET_RESET
               value: earliest
 
-            - name: SPRING_MAIL_HOST
-              value: smtp.gmail.com
-            - name: SPRING_MAIL_PORT
-              value: "587"
-            - name: SPRING_MAIL_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: smtp-secret
-                  key: SMTP_USERNAME
-            - name: SPRING_MAIL_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: smtp-secret
-                  key: SMTP_PASSWORD
-            - name: SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH
-              value: "true"
-            - name: SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE
-              value: "true"
+            - name: AWS_REGION
+              value: ap-south-1
+            - name: AWS_SNS_TOPIC_ARN
+              value: arn:aws:sns:ap-south-1:463423328685:sneakhive-invoice-topic
