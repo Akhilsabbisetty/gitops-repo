@@ -1,33 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: redpanda
+  name: redpanda-console
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: redpanda
+      app: redpanda-console
   template:
     metadata:
       labels:
-        app: redpanda
+        app: redpanda-console
     spec:
       containers:
-        - name: redpanda
-          image: docker.redpanda.com/redpandadata/redpanda:latest
-          args:
-            - redpanda
-            - start
-            - --overprovisioned
-            - --smp=1
-            - --memory=1G
-            - --reserve-memory=0M
-            - --node-id=0
-            - --check=false
-            - --kafka-addr=internal://0.0.0.0:9092,external://0.0.0.0:19092
-            - --advertise-kafka-addr=internal://redpanda:9092,external://redpanda.ascloud.space:19092
+        - name: redpanda-console
+          image: docker.redpanda.com/redpandadata/console:latest
           ports:
-            - name: kafka-internal
-              containerPort: 9092
-            - name: kafka-external
-              containerPort: 19092
+            - containerPort: 8080
+          env:
+            - name: KAFKA_BROKERS
+              value: redpanda:9092
