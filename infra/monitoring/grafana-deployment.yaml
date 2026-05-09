@@ -29,12 +29,7 @@ spec:
               value: grafana.ascloud.space
             - name: GF_SERVER_PROTOCOL
               value: http
-            - name: GF_SERVER_ENFORCE_DOMAIN
-              value: "false"
-            - name: GF_SECURITY_COOKIE_SECURE
-              value: "true"
-            - name: GF_SECURITY_COOKIE_SAMESITE
-              value: lax
+            
           volumeMounts:
             - name: grafana-datasources
               mountPath: /etc/grafana/provisioning/datasources
