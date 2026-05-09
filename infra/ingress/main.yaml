@@ -105,17 +105,6 @@ spec:
                 port:
                   number: 9090
 
-    - host: grafana.ascloud.space
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: grafana
-                port:
-                  number: 3000
-
     - host: kibana.ascloud.space
       http:
         paths:

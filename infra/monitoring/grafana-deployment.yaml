@@ -7,38 +7,42 @@ spec:
   selector:
     matchLabels:
       app: grafana
-
   template:
     metadata:
       labels:
         app: grafana
-
     spec:
       containers:
         - name: grafana
-          image: grafana/grafana:latest
-
+          image: grafana/grafana:10.4.3
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
-
           env:
+            - name: GF_SECURITY_ADMIN_USER
+              value: admin
+            - name: GF_SECURITY_ADMIN_PASSWORD
+              value: admin123
             - name: GF_SERVER_ROOT_URL
               value: https://grafana.ascloud.space/
-
             - name: GF_SERVER_DOMAIN
               value: grafana.ascloud.space
-
             - name: GF_SERVER_PROTOCOL
               value: http
-
             - name: GF_SERVER_ENFORCE_DOMAIN
               value: "false"
-  
-            - name: GF_AUTH_DISABLE_LOGIN_FORM
-              value: "false"
-
             - name: GF_SECURITY_COOKIE_SECURE
               value: "true"
-
             - name: GF_SECURITY_COOKIE_SAMESITE
-              value: none
+              value: lax
+          volumeMounts:
+            - name: grafana-datasources
+              mountPath: /etc/grafana/provisioning/datasources
+            - name: grafana-storage
+              mountPath: /var/lib/grafana
+      volumes:
+        - name: grafana-datasources
+          configMap:
+            name: grafana-datasources
+        - name: grafana-storage
+          emptyDir: {}
