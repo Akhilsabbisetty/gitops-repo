@@ -5,20 +5,24 @@ metadata:
   namespace: default
 data:
   filebeat.yml: |-
-    filebeat.inputs:
-      - type: container
-        paths:
-          - /var/log/containers/*.log
+  filebeat.inputs:
+    - type: filestream
+      id: kubernetes-container-logs
+      paths:
+        - /var/log/containers/*.log
+      prospector.scanner.symlinks: true
+      parsers:
+        - container: ~
 
-    processors:
-      - add_kubernetes_metadata:
-          host: ${NODE_NAME}
-          matchers:
-            - logs_path:
-                logs_path: "/var/log/containers/"
+  processors:
+    - add_kubernetes_metadata:
+        host: ${NODE_NAME}
+        matchers:
+          - logs_path:
+              logs_path: "/var/log/containers/"
 
-    output.elasticsearch:
-      hosts: ["http://elasticsearch:9200"]
+  output.elasticsearch:
+    hosts: ["http://elasticsearch:9200"]
 
 ---
 apiVersion: v1
